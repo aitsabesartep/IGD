@@ -1,6 +1,7 @@
 package com.example.ssb.android_controler;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -13,7 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
+public class MainActivity extends AppCompatActivity{
 
     private String ip = "192.168.1.13";
     private String port = "1111";
@@ -21,11 +22,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private SensorManager sManager;
     private Connexio s;
     private float current;
+    private Context c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        c = this;
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
@@ -50,21 +53,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                     precisio = 1;
                 }
                 if (!ip.equals("null")){
-
                     //Connecció
-                    s = new Connexio(ip, Integer.parseInt(port),this);
-                    s.start();
-                    iniciGyro();
+                    Thread t = new Thread() {
+                        public void run() {
+                            s = new Connexio(ip, Integer.parseInt(port),c,precisio);
+                            s.start();
+                        }
+                    };
+                    t.start();
                 }
             }
         }
-    }
-
-    private void iniciGyro(){
-        //Comensar a procesar
-        current = 0;
-        sManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        sManager.registerListener(this, sManager.getDefaultSensor(android.hardware.Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_GAME);
     }
 
     @Override
@@ -76,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-
             Intent i = new Intent(MainActivity.this, Preferencis.class);
             i.putExtra("ip",ip);
             i.putExtra("port",port);
@@ -84,47 +82,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             this.startActivityForResult(i, 1);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE){
-            return;
-        }
-        float aux = event.values[1];
-        int aux1 = (int) ( aux * 1000);
-        float fi = ((float) aux1/ (float) 1000);
-
-        float dif = Math.abs(current-fi);
-
-        TextView tv1 = (TextView) this.findViewById(R.id.pantalla1);
-        tv1.setText("Orientation Y (Pitch) :" + Float.toString(dif));
-
-        if (dif < precisio){
-            return;
-        }
-
-        current = fi;
-
-        TextView tv = (TextView) this.findViewById(R.id.pantalla);
-        tv.setText("Orientation Y (Pitch) :" + Float.toString(current));
-
-        try {
-            s.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        //synchronized (s.getLock()){
-            s.getLlista().add(current);
-            //s.getLock().notifyAll();
-        //}
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
 }

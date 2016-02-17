@@ -11,24 +11,4 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.ssb.android_controler.MainActivity"
     tools:showIn="@layout/activity_main">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <TextView
-        android:id="@+id/pantalla"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hola"/>
-
-    <TextView
-        android:id="@+id/pantalla1"
-        android:layout_marginTop="100px"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hola"/>
-
-</LinearLayout>
-
-
 </RelativeLayout>
