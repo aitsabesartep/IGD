@@ -25,7 +25,7 @@ public class Preferencis extends Activity {
         p = (TextView) this.findViewById(R.id.pre);
         dir.setText(getIntent().getExtras().getString("ip"));
         port.setText(getIntent().getExtras().getString("port"));
-        p.setText(String.valueOf(getIntent().getExtras().getDouble("precisio")));
+        p.setText(1+"");
 
 
         Button b = (Button) this.findViewById(R.id.a);

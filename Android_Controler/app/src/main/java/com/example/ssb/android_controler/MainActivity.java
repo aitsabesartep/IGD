@@ -17,12 +17,11 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity{
 
     private String ip = "192.168.1.13";
-    private String port = "1111";
+    private String port = "7874";
     private double precisio = 1;
-    private SensorManager sManager;
     private Connexio s;
-    private float current;
     private Context c;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +53,12 @@ public class MainActivity extends AppCompatActivity{
                 }
                 if (!ip.equals("null")){
                     //Connecció
-                    Thread t = new Thread() {
+                    new Thread(){
+                        @Override
                         public void run() {
-                            s = new Connexio(ip, Integer.parseInt(port),c,precisio);
-                            s.start();
+                            new Connect(ip,Integer.parseInt(port),precisio,c).execute();
                         }
-                    };
-                    t.start();
+                    }.start();
                 }
             }
         }
@@ -78,10 +76,14 @@ public class MainActivity extends AppCompatActivity{
             Intent i = new Intent(MainActivity.this, Preferencis.class);
             i.putExtra("ip",ip);
             i.putExtra("port",port);
-            i.putExtra("pre",precisio);
             this.startActivityForResult(i, 1);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        s.close();
     }
 }

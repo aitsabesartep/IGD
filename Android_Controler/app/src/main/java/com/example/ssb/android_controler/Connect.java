@@ -5,61 +5,90 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.widget.TextView;
+import android.os.AsyncTask;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
-import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.URL;
+import java.util.List;
 
 /**
- * Created by ssb on 17/2/16.
+ * Created by ssb on 18/2/16.
  */
-public class Connexio extends Thread {
+
+
+public class Connect extends AsyncTask<Void, Integer, Boolean> {
 
     private String dir;
     private int port;
     private double precisio;
     private Socket socket;
+    private float current;
+    private DataOutputStream send;
     private SensorManager mSensor;
     private Sensor sSensor;
     private SensorEventListener mListener;
-    private HandlerThread mHandlerThread;
     private Context c;
-    private float current;
-    private DataOutputStream send;
 
-    public Connexio(String d, int p, Context con, double pre){
+    public Connect(String d, int po, double pre, Context con){
         dir = d;
-        port = p;
-        c = con;
+        port = po;
         precisio = pre;
+        c = con;
         current = 0;
+        startConect();
+        initBuf();
+        startSensor();
     }
 
     @Override
-    public void run() {
-        super.run();
-        startRegister();
+    protected Boolean doInBackground(Void... params) {
+        startSensor();
+        return true;
     }
 
-    private void startRegister(){
-        startConect();
-        initBuf();
-        mHandlerThread = new HandlerThread("Sender");
-        mHandlerThread.start();
-        Handler handler = new Handler(mHandlerThread.getLooper());
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+    }
 
+    @Override
+    protected void onPreExecute() {
+    }
+
+    @Override
+    protected void onPostExecute(Boolean result) {
+    }
+
+    @Override
+    protected void onCancelled() {
+    }
+
+    private void startConect(){
+
+        socket = new Socket();
+        try {
+            socket.connect(new InetSocketAddress(dir,port),1000);
+        } catch (IOException e) {
+            System.out.println(e);
+            System.out.println("Error socket.connect");
+            //Avisar
+        }
+    }
+
+    private void initBuf(){
+        try {
+            send = new DataOutputStream(socket.getOutputStream());
+        } catch (IOException e) {
+            System.out.println("Error iniciar buffer");
+        }
+    }
+
+    private void startSensor(){
         mSensor = (SensorManager) c.getSystemService(c.SENSOR_SERVICE);
         sSensor = mSensor.getDefaultSensor(android.hardware.Sensor.TYPE_ORIENTATION);
-        //sManager.registerListener(c, sManager.getDefaultSensor(android.hardware.Sensor.TYPE_ORIENTATION), SensorManager.SENSOR_DELAY_GAME);
+        mSensor.registerListener(mListener, sSensor, SensorManager.SENSOR_DELAY_GAME);
         mListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
@@ -77,36 +106,13 @@ public class Connexio extends Thread {
                 try {
                     send.writeFloat(current);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.exit(0);
                 }
-            }
 
+            }
             @Override
             public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
             }
         };
-        mSensor.registerListener(mListener, sSensor, SensorManager.SENSOR_DELAY_GAME);
-    }
-
-    private void startConect(){
-        socket = new Socket();
-        try {
-            socket.connect(new InetSocketAddress(dir,port),50);
-        } catch (IOException e) {
-            //Missatge error connexió.
-            try {
-                socket.close();
-            } catch (IOException e1) {
-            }
-        }
-    }
-
-    private void initBuf(){
-        try {
-            send = new DataOutputStream(socket.getOutputStream());
-        } catch (IOException e) {
-            System.out.println("Error buffer");
-        }
     }
 }
