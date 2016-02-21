@@ -16,10 +16,9 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity{
 
-    private String ip = "192.168.1.13";
+    private String ip = "192.168.1.133";
     private String port = "7874";
-    private double precisio = 1;
-    private Connexio s;
+    private double precisio = 5;
     private Context c;
 
 
@@ -80,10 +79,5 @@ public class MainActivity extends AppCompatActivity{
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        s.close();
     }
 }

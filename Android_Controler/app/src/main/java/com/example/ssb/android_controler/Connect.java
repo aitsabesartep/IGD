@@ -25,12 +25,13 @@ public class Connect extends AsyncTask<Void, Integer, Boolean> {
     private int port;
     private double precisio;
     private Socket socket;
-    private float current;
+    private int current;
     private DataOutputStream send;
     private SensorManager mSensor;
     private Sensor sSensor;
     private SensorEventListener mListener;
     private Context c;
+    private int last = 0;
 
     public Connect(String d, int po, double pre, Context con){
         dir = d;
@@ -69,7 +70,7 @@ public class Connect extends AsyncTask<Void, Integer, Boolean> {
 
         socket = new Socket();
         try {
-            socket.connect(new InetSocketAddress(dir,port),1000);
+            socket.connect(new InetSocketAddress(dir, port), 1000);
         } catch (IOException e) {
             System.out.println(e);
             System.out.println("Error socket.connect");
@@ -102,9 +103,20 @@ public class Connect extends AsyncTask<Void, Integer, Boolean> {
                 if (dif < precisio){
                     return;
                 }
-                current = fi;
+
+                if (fi > 4) {
+                    current = 37;
+                } else if (fi < -4) {
+                    current = 39;
+                } else if (fi < 4 && fi > -4) {
+                    current = 0;
+                }
+
+                if (current == last) return;
+
+                last = current;
                 try {
-                    send.writeFloat(current);
+                    send.writeInt(current);
                 } catch (IOException e) {
                     System.exit(0);
                 }
