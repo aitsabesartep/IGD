@@ -46,7 +46,6 @@ public class Connect extends AsyncTask<Void, Integer, Boolean> {
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        startSensor();
         return true;
     }
 
@@ -56,6 +55,7 @@ public class Connect extends AsyncTask<Void, Integer, Boolean> {
 
     @Override
     protected void onPreExecute() {
+        startSensor();
     }
 
     @Override
