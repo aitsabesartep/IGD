@@ -100,7 +100,7 @@ public class Pong extends JFrame implements KeyListener {
             g.fillRect(0, 0, windowWidth, windowHeight);
 
             muestroPuntos(g);
-            dibujoPelota(g);
+            //dibujoPelota(g);
             dibujoPaletas(g);
 
         } finally {

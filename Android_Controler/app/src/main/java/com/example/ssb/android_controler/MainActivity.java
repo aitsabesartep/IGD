@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity{
 
     private String ip = "192.168.1.133";
     private String port = "7874";
-    private double precisio = 5;
+    private double precisio = 0.05;
     private Context c;
 
 
@@ -55,7 +55,8 @@ public class MainActivity extends AppCompatActivity{
                     new Thread(){
                         @Override
                         public void run() {
-                            new Connect(ip,Integer.parseInt(port),precisio,c).execute();
+
+                            new Connect(ip,Integer.parseInt(port),precisio,c, (TextView) findViewById(R.id.sortida1)).execute();
                         }
                     }.start();
                 }

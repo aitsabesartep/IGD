@@ -11,4 +11,9 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.ssb.android_controler.MainActivity"
     tools:showIn="@layout/activity_main">
+
+    <TextView
+        android:id="@+id/sortida1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </RelativeLayout>
