@@ -41,7 +41,7 @@ public class Connect extends AsyncTask<Void, Integer, Boolean> {
     private float buffer[];
     private int pos;
 
-    public Connect(String d, int po, double pre, Context con, TextView s){
+    public Connect(String d, int po, double pre, Context con, TextView s, int tamany){
         dir = d;
         port = po;
         precisio = pre;
@@ -50,7 +50,7 @@ public class Connect extends AsyncTask<Void, Integer, Boolean> {
         tv = s;
 
         pos = 0;
-        buffer = new float[10];
+        buffer = new float[tamany];
         Arrays.fill(buffer, 0);
 
         startConect();
