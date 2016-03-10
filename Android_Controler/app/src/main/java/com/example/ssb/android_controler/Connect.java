@@ -38,7 +38,8 @@ public class Connect extends AsyncTask<Void, Integer, Boolean> {
     private Context c;
     private int last = 0;
     private TextView tv;
-    private float buffer[];
+    private float buffery[];
+    private float bufferx[];
     private int pos;
 
     public Connect(String d, int po, double pre, Context con, TextView s, int tamany){
@@ -50,8 +51,10 @@ public class Connect extends AsyncTask<Void, Integer, Boolean> {
         tv = s;
 
         pos = 0;
-        buffer = new float[tamany];
-        Arrays.fill(buffer, 0);
+        buffery = new float[tamany];
+        Arrays.fill(buffery, 0);
+        bufferx = new float[tamany];
+        Arrays.fill(bufferx, 0);
 
         startConect();
         initBuf();
@@ -111,46 +114,50 @@ public class Connect extends AsyncTask<Void, Integer, Boolean> {
                     return;
                 }
 
-                buffer[pos] = event.values[1];
+                buffery[pos] = event.values[1];
+                bufferx[pos] = event.values[2];
                 pos++;
-                float media = 0;
+                float mediay = 0;
+                float mediax = 0;
                 if (pos == 9){
                     pos = 0;
                 }
-                for (int i = 0; i < buffer.length; i++){
-                    media = media + buffer[i];
+                for (int i = 0; i < buffery.length; i++){
+                    mediay = mediay + buffery[i];
+                    mediax = mediax + bufferx[i];
                 }
-                media = media/buffer.length;
 
-                tv.setText("Valor[Y]: "+ media +
-                "\nValor[X]: "+event.values[2] +
-                "\nValor[Z]: "+event.values[0]);
+                mediax = mediax/bufferx.length;
+                mediax = (int) (mediax * (10 * 1));
+                mediax = mediax/(10*1);
+                mediay = mediay/buffery.length;
+                mediay = (int) (mediay * (10 * 1));
+                mediay = mediay/(10 * 1);
 
+
+
+                tv.setText("Valor[Y]: "+ mediay +
+                "\nValor[X]: "+ mediax);
 
                 //Comprovar precisio
-                float aux = event.values[1];
+                /*float aux = event.values[1];
                 int aux1 = (int) ( aux * 1000);
                 float fi = ((float) aux1/ (float) 1000);
                 float dif = Math.abs(current-fi);
                 if (dif < precisio){
                     return;
                 }
+                last = current;*/
 
-                if (fi > 4) {
-                    current = 37;
-                } else if (fi < -4) {
-                    current = 39;
-                } else if (fi < 4 && fi > -4) {
-                    current = 0;
-                }
-
-                if (current == last) return;
-
-                last = current;
                 try {
-                    send.writeInt(current);
+                    send.writeFloat(mediay);
                 } catch (Exception e) {
                     //System.exit(0);
+                }
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
 
             }

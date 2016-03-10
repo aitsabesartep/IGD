@@ -33,6 +33,17 @@ public class Conexio extends Thread {
 
     @Override
     public void run() {
+        
+        Thread t = new Thread(){
+            @Override
+            public void run() {
+                while (true) {                    
+                    
+                }
+//To change body of generated methods, choose Tools | Templates.
+            }
+        };
+        
         try {
             so = sc.accept();
             System.out.println("Controlador connectat");
