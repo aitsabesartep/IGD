@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private SensorManager mSensorManager = null;
 
-    // angular speeds from gyro
+    // Velocitat angular GYROSCOPI
     private float[] gyro = new float[3];
 
     // rotation matrix from gyro data
