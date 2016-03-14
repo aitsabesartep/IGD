@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity{
                     new Thread(){
                         @Override
                         public void run() {
-                            new Connect(ip,Integer.parseInt(port),precisio,c, (TextView) findViewById(R.id.sortida1), 30).execute();
+                            new Connect(ip,Integer.parseInt(port),precisio,c, (TextView) findViewById(R.id.sortida1)).execute();
                         }
                     }.start();
                 }
