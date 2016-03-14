@@ -30,15 +30,11 @@ public class Connect extends AsyncTask<Void, Integer, Boolean> {
     private int port;
     private Socket socket;
     private DataOutputStream send;
-    private SensorManager mSensor;
-    private Sensor sSensor;
-    private SensorEventListener mListener;
     private Context c;
     private TextView tv;
-    private float buffery[];
-    private float bufferx[];
-    private float bufferz[];
-    private int pos;
+
+    private float[] mR = new float[9];
+    private float[] mOrientation = new float[3];
 
     public Connect(String d, int po, double pre, Context con, TextView s){
         dir = d;
@@ -46,13 +42,13 @@ public class Connect extends AsyncTask<Void, Integer, Boolean> {
         c = con;
         tv = s;
 
+
         //startConect();
         //initBuf();
     }
 
     @Override
     protected Boolean doInBackground(Void... params) {
-        startSensor();
         return true;
     }
 
@@ -62,6 +58,7 @@ public class Connect extends AsyncTask<Void, Integer, Boolean> {
 
     @Override
     protected void onPreExecute() {
+        startSensor();
     }
 
     @Override
@@ -93,43 +90,7 @@ public class Connect extends AsyncTask<Void, Integer, Boolean> {
     }
 
     private void startSensor(){
-        System.out.println("Start sensor");
-        mSensor = (SensorManager) c.getSystemService(c.SENSOR_SERVICE);
-        sSensor = mSensor.getDefaultSensor(android.hardware.Sensor.TYPE_ORIENTATION);
-        mSensor.registerListener(mListener, sSensor, SensorManager.SENSOR_DELAY_GAME);
-        mListener = new SensorEventListener() {
-            @Override
-            public void onSensorChanged(SensorEvent event) {
-                if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE){
-                    return;
-                }
-
-
-                pos++;
-                float mediay = 0;
-                float mediax = 0;
-                float mediaz = 0;
-
-                mediay = event.values[1];
-                mediax = event.values[2];
-
-                tv.setText("Valor[Y]: "+ mediay);
-
-                /*
-                try {
-                    send.writeFloat(mediay);
-                } catch (Exception e) {
-                }
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }*/
-
-            }
-            @Override
-            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-            }
-        };
+        SensorManager sm = (SensorManager) c.getSystemService(c.SENSOR_SERVICE);
+        ImprovedOrientationSensor1Provider s = new ImprovedOrientationSensor1Provider(sm);
     }
 }
