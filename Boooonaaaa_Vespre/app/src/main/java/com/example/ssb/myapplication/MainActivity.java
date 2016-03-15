@@ -19,8 +19,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     float[] gData = new float[3];           // Gravity or accelerometer
     float[] mData = new float[3];           // Magnetometer
     float[] orientation = new float[3];
-    float[] Rmat = new float[9];
-    float[] R2 = new float[9];
+    float[] Rmat = new float[9];            //Matriu de rotacio
+    float[] R2 = new float[9];              //Matriu rotacio
     float[] Imat = new float[9];
     boolean haveGrav = false;
     boolean haveAccel = false;
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent event) {
         float[] data;
         switch( event.sensor.getType() ) {
+
             case Sensor.TYPE_GRAVITY:
                 gData[0] = event.values[0];
                 gData[1] = event.values[1];
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             SensorManager.getOrientation(R2, orientation);
             float incl = SensorManager.getInclination(Imat);
 
-
+            //Obtenim radiants i les passam a graus
             double x180pi = 180.0 / Math.PI;
             bufferx[pos] = (float) (orientation[2] * x180pi);
             buffery[pos] = (float) (orientation[1] * x180pi);
