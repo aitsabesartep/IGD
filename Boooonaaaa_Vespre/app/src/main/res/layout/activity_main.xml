@@ -9,9 +9,24 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.ssb.myapplication.MainActivity">
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1.0" >
+        <Button
+            android:id="@+id/be"
+            android:text="left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:background="@color/naranja"/>
+
+        <Button
+            android:id="@+id/bd"
+            android:text="right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:background="@color/verd"/>
+    </LinearLayout>
 </RelativeLayout>
