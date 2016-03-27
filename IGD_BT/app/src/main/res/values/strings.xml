@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Control</string>
+    <string name="action_settings">Settings</string>
+    <string name="titolPreferencis">Configuración</string>
+    <string name="port">Puerto</string>
+    <string name="ip">Dirección IP</string>
+    <string name="media">Usar media</string>
+    <string name="resum_media">Usar búffer para realizar la media</string>
+    <string name="num_media">Tamaño búffer</string>
+    <string name="frecuencia">Frecuencia (ms)</string>
+    <string name="boto_conect">boto_conect</string>
+    <string name="estado_button_conectado">Conectado</string>
+    <string name="estado_button_desconectado">Desconectado</string>
+    <string name="sumary_boto_con">Conectar</string>
+    <string name="sumary_boto_des">Clica para desconectar</string>
+</resources>
