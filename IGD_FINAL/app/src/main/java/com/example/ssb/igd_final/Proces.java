@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class Proces extends AppCompatActivity implements SensorEventListener{
@@ -56,6 +57,12 @@ public class Proces extends AppCompatActivity implements SensorEventListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_proces);
+
+        SensorManager mgr = (SensorManager) getSystemService(SENSOR_SERVICE);
+        List<Sensor> sensors = mgr.getSensorList(Sensor.TYPE_ALL);
+        for (Sensor sensor : sensors) {
+            System.out.println("Sensors: " + sensor.getName());
+        }
 
         Intent myIntent = getIntent(); // gets the previously created intent
         ip = myIntent.getStringExtra("ip");

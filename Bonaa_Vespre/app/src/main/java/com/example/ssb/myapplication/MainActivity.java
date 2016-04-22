@@ -60,11 +60,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bufferx = new float[1];
+        bufferx = new float[3];
         Arrays.fill(bufferx, 0);
-        buffery = new float[1];
+        buffery = new float[3];
         Arrays.fill(buffery, 0);
-        bufferz = new float[1];
+        bufferz = new float[3];
         Arrays.fill(bufferz, 0);
         pos = 0;
 
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 e.printStackTrace();
             }
             pos++;
-            if (pos == 1) {
+            if (pos == 3) {
                 pos = 0;
             }
         }
